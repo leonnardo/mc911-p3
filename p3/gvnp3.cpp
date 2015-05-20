@@ -24,8 +24,8 @@ namespace {
                     // Verifies if actual instruction is store and next is load
                     BasicBlock::iterator next = inst;
                     next++;
-                    Value *v = &*inst;
-                    Value *t = &*next;
+                    Value *v = inst;
+                    Value *t = next;
 
                     if (isa<StoreInst>(*v) && isa<LoadInst>(*t)) {
                         if (inst->getOperand(1) == next->getOperand(0)) {
