@@ -37,26 +37,18 @@ private:
 
 
 public:
-	static char ID; 
+	static char ID;
 	Liveness() : FunctionPass(ID) {}
 
 	virtual bool runOnFunction(Function &F);
     void computeBBDefUse(Function &F);
     void computeBBInOut(Function &F);
-
     void computeIInOut(Function &F);
-
     bool isLiveOut(Instruction *I, Value *V);
     void addToMap(Function &F);
 
 	virtual void getAnalysisUsage(AnalysisUsage &AU) const{
 		AU.setPreservesAll();
 	}
-
-
-
 };
-
 }
-
-
