@@ -1,4 +1,3 @@
-
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Function.h"
@@ -10,12 +9,14 @@
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/IR/User.h"
 #include "llvm/IR/Instructions.h"
-#include <set>
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/Analysis/CFG.h"
 #include "llvm/ADT/BitVector.h"
 #include "llvm/IR/ValueMap.h"
-
+#include "llvm/Support/Casting.h"
+#include "llvm/IR/CFG.h"
+#include "llvm/IR/IntrinsicInst.h"
+#include <set>
 using namespace llvm;
 
 namespace llvm {
@@ -28,24 +29,19 @@ struct LivenessInfo {
 };
 
 class Liveness: public FunctionPass {
-private:
+public:
 
     DenseMap<const Instruction*, LivenessInfo> iLivenessMap;
     DenseMap<const BasicBlock*, LivenessInfo> bbLivenessMap;
-
     DenseMap<const Instruction*, int> instMap;
 
-
-public:
-	static char ID;
+    static char ID;
 	Liveness() : FunctionPass(ID) {}
 
 	virtual bool runOnFunction(Function &F);
     void computeBBDefUse(Function &F);
     void computeBBInOut(Function &F);
     void computeIInOut(Function &F);
-    bool isLiveOut(Instruction *I, Value *V);
-    void addToMap(Function &F);
 
 	virtual void getAnalysisUsage(AnalysisUsage &AU) const{
 		AU.setPreservesAll();
